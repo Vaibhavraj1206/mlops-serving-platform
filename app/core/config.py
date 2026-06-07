@@ -9,6 +9,9 @@ class Settings:
     
     # System memory se Redis ka URL uthao, agar nahi mile toh local fallback lagao
     REDIS_URL: str = os.getenv("REDIS_URL", "redis://localhost:6379")
+    MLFLOW_TRACKING_URI: str = os.getenv("MLFLOW_TRACKING_URI")
+    MLFLOW_TRACKING_USERNAME: str = os.getenv("MLFLOW_TRACKING_USERNAME")
+    MLFLOW_TRACKING_PASSWORD: str = os.getenv("MLFLOW_TRACKING_PASSWORD")
 
 # Poore project mein use karne ke liye settings ka ek instance bana liya
 settings = Settings()

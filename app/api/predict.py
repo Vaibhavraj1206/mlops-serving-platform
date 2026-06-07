@@ -10,7 +10,7 @@ router = APIRouter()
 # Dependency injection: path function mein 'background_tasks: BackgroundTasks' add kiya
 @router.post("/predict")
 def make_prediction(input_data: MLInput, background_tasks: BackgroundTasks):
-    input_dict = {"text": input_data.data_text}
+    input_dict = {"text": input_data.features}
     cache_key = generate_cache_key(input_dict)
     cached_result = get_cached_prediction(cache_key)
     
@@ -19,20 +19,20 @@ def make_prediction(input_data: MLInput, background_tasks: BackgroundTasks):
         background_tasks.add_task(
             log_inference_to_db, 
             input_data.user_id, 
-            input_data.data_text, 
+            input_data.features, 
             cached_result['label']
         )
         
         return {
             "message": f"Data processed for user {input_data.user_id}",
-            "your_input": input_data.data_text,
+            "your_input": input_data.features,
             "ai_prediction": cached_result['label'],
             "ai_confidence": cached_result['confidence'],
             "source": "Redis Cache ⚡"
         }
         
     # CACHE MISS! AI Model run karo
-    ml_result = get_prediction(input_data.data_text)
+    ml_result = get_prediction(input_data.features)
     
     prediction_to_save = {
         "label": ml_result['label'],
@@ -45,13 +45,13 @@ def make_prediction(input_data: MLInput, background_tasks: BackgroundTasks):
     background_tasks.add_task(
         log_inference_to_db, 
         input_data.user_id, 
-        input_data.data_text, 
+        input_data.features, 
         prediction_to_save['label']
     )
     
     return {
         "message": f"Data processed for user {input_data.user_id}",
-        "your_input": input_data.data_text,
+        "your_input": input_data.features,
         "ai_prediction": prediction_to_save['label'],
         "ai_confidence": prediction_to_save['confidence'],
         "source": "AI Model 🤖"
