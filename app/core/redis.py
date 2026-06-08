@@ -37,6 +37,17 @@ def set_cached_prediction(cache_key: str, prediction_data: dict, ttl_seconds: in
         print(f"Redis SET Error: {e}")
         return False
 
+def flush_prediction_cache():
+    """Naya model aane par purane saare cached results delete kar deta hai."""
+    try:
+        # Redis mein jo bhi keys hain, sab delete kar do
+        redis_client.flushdb()
+        print("🗑️ Redis Cache flushed completely! Naye model ke liye ready.")
+        return True
+    except Exception as e:
+        print(f"Redis Flush Error: {e}")
+        return False
+
 # --- CLOUD CONNECTION TEST ---
 if __name__ == "__main__":
     print("Testing Redis Connection...")
