@@ -12,6 +12,7 @@ class Settings:
     MLFLOW_TRACKING_URI: str = os.getenv("MLFLOW_TRACKING_URI")
     MLFLOW_TRACKING_USERNAME: str = os.getenv("MLFLOW_TRACKING_USERNAME")
     MLFLOW_TRACKING_PASSWORD: str = os.getenv("MLFLOW_TRACKING_PASSWORD")
+    DATABASE_URL: str = os.getenv("DATABASE_URL")
 
 # Poore project mein use karne ke liye settings ka ek instance bana liya
 settings = Settings()
