@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from app.api import predict, models  # Apna route import kiya
 from app.ml.model_loader import load_cloud_model # Naya function import kiya
+from prometheus_fastapi_instrumentator import Instrumentator
 
 # 1. Naya Lifespan Logic (Server start hote hi model laana)
 @asynccontextmanager
@@ -15,9 +16,11 @@ async def lifespan(app: FastAPI):
 # 2. FastAPI app banana (Tera purana title + Naya lifespan merge kar diya)
 app = FastAPI(title="MLOps Serving Platform", lifespan=lifespan)
 
+Instrumentator().instrument(app).expose(app)
+
 # 3. Extension cord ko switchboard mein lagaya (Purana Router)
-app.include_router(predict.router)
-app.include_router(models.router)
+app.include_router(predict.router, tags=["Prediction"])
+app.include_router(models.router, tags=["Models"])
 
 # 4. Tera original Health Check Route
 @app.get("/")
