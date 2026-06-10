@@ -12,7 +12,7 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials # <-- Security modu
 async def lifespan(app: FastAPI):
     print("🚀 Server start ho raha hai...")
     # Server start hote hi Cloud se model download karo
-    load_cloud_model(version=1)
+    load_cloud_model(version=2)
     yield
     print("🛑 Server band ho raha hai...")
 
