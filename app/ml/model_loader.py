@@ -16,7 +16,7 @@ _model_state = {
     "loaded_at": None
 }
 
-def load_cloud_model(version=1):
+def load_cloud_model(version=2):
     """Ye function server start hote hi ya switch hone par DagsHub se model download karega."""
     global _model_state
     try:
