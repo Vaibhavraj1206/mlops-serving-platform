@@ -59,7 +59,7 @@ def get_prediction(features_list: list):
         
     tensor_input = torch.tensor([features_list], dtype=torch.float32)
     with torch.no_grad():
-        output = _model_state["model"](tensor_input)
+        output = _model_state["model"].forward(tensor_input)
         prediction = output.argmax(dim=1).item()
         
     return {"label": f"Class {prediction}", "score": 0.99}
